@@ -1,69 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{ useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  ScrollView,
+  FlatList
+} from 'react-native';
+
+import TaskItem from './components/TaskItem';
+import TaskInput from './components/TaskInput';
 
 export default function App() {
-  const [enteredTask, setEnteredTask] = useState('')
   const [tasks, setTasks] = useState([])
 
-  const taskInputhandler = (enteredText)=>{
-    setEnteredTask(enteredText);
-  }
   // Create and save a task
-  const addTask = () => {
-                                                // Add enteredTask to tasks
-    setTasks(currentTasks => [...currentTasks, enteredTask])
+  var counter =1;
+  const addTaskHandler = taskTitle => {
+    // Add enteredTask to tasks
+    setTasks(currentTaskTitle => [
+      ...currentTaskTitle,
+      { key: counter.toString(), value: taskTitle }
+    ]);
+    counter+=1
   }
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Create a task"
-          style={styles.placeHolder}
-          onChangeText={taskInputhandler}
-          value={enteredTask}
-        />
-        <Button
-          style={styles.actionButton}
-          title="Add task"
-          onPress={addTask}
+      <ScrollView style={styles.mainContainer}>
+        <TaskInput onAddTask={addTaskHandler}></TaskInput>
+        <FlatList
+          data={tasks}
+          renderItem={itemData => <TaskItem title={itemData.item.value} />}
           />
-      </View>
-      <View style={styles.container}>
-      </View>
-      <View>
-        {tasks.map((task) => <View style={styles.listItem}><Text key={task}>{task}</Text></View>)}
-      </View>
-    </View>
+      </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    width: 300,
-  },
-  placeHolder: {
-    borderColor: 'grey',
-    borderWidth: 1,
-    padding: 10,
-  },
   mainContainer: {
-    padding: 50,
-  },
-  actionButton: {
-    margin:10,
-  },
-  listItem: {
-    padding: 10,
-    marginTop: 10,
-    backgroundColor: '#3333',
-    textAlign: 'center',
-    width:300,
+    padding: 50
   }
 
 });
