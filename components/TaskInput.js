@@ -19,11 +19,10 @@ const TaskInput = props => {
             <Button
               style={styles.actionButton}
               title="Add task"
-              onPress={props.onAddTask.bind(this, enteredTask)}
+              onPress={props.onAddTask.bind(this, enteredTask)} // This enteredTask parameter is forwarded to addTaskHandler
               />
           </View>
-    )
-}
+)}
 
 const styles = StyleSheet.create({
   container: {
